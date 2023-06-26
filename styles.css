@@ -1,0 +1,94 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+}
+
+.navbar {
+    background-color: #800020;
+}
+
+.navbar .nav-link {
+    color: #ffffff;
+}
+
+.navbar .navbar-brand {
+    color: #ffffff;
+}
+
+.container {
+    max-width: 960px;
+    margin: auto;
+    padding: 0 2rem;
+}
+
+#services h1, #services h2 {
+    color: #800020;
+}
+
+#services .row {
+    margin-bottom: 100px;
+}
+
+#services .row:last-child {
+    margin-bottom: 0;
+}
+
+img {
+    max-width: 100%;
+    height: 300px;
+    width: 300px;
+}
+.footer {
+    padding: 50px 40px;
+  }
+  
+  .footer h5 {
+    margin-bottom: 20px;
+  }
+  
+  .footer ul {
+    padding-left: 0;
+    list-style-type: none;
+  }
+  
+  .footer ul li a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .footer ul li a:hover {
+    color: #ccc;
+    text-decoration: none;
+  }
+  
+  .footer a {
+    display: block;
+  }
+
+  input[type="text"], input[type="email"], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    margin-bottom: 10px;
+}
+
+input[type="submit"] {
+    background-color: #870505;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #700404;
+}
+
+.container {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
