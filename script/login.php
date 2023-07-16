@@ -1,36 +1,34 @@
 <?php
-require 'db.php';  // Fichier contenant les informations de connexion à votre base de données
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "garage";
 
-session_start();
+try {
+    $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// Vérifie si l'utilisateur est connecté et a le rôle d'administrateur
-if (!isset($_SESSION['loggedin']) || $_SESSION['role'] != 'admin') {
-    header('Location: login.php');
-    exit;
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $email = $_POST["email"];
+        $password = $_POST["password"];
+
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch();
+
+        // Vérifier si l'utilisateur existe et que le mot de passe est correct
+        if ($user && $password === $user["password"]) {  // comparaison directe ici
+            // L'utilisateur est connecté
+            session_start();
+            $_SESSION["loggedin"] = true;
+            $_SESSION["id"] = $user["id"];
+            header("location: dashboard.php");
+            exit;
+        } else {
+            // Message d'erreur
+            echo "Invalid email or password.";
+        }
+    }
+} catch (PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
 }
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);  // Hash du mot de passe pour la sécurité
-    $role = $_POST['role'];  // Le rôle de l'utilisateur (administrateur, employé, etc.)
-
-    $sql = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sss", $username, $password, $role);
-    $stmt->execute();
-
-    echo "Compte utilisateur créé avec succès.";
-} else {
-?>
-<form method="POST" action="">
-    Nom d'utilisateur: <input type="text" name="username" required><br>
-    Mot de passe: <input type="password" name="password" required><br>
-    Rôle: <select name="role">
-              <option value="admin">Administrateur</option>
-              <option value="employee">Employé</option>
-          </select><br>
-    <input type="submit" value="Créer un compte">
-</form>
-<?php
-}
-?>

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Login</title>
+  <title>Connexion</title>
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="styles.css">
+  <link rel="stylesheet" type="text/css" href="../styles.scss">
   
 </head>
 <body>
@@ -13,7 +13,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Connexion</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -22,14 +22,14 @@
           <!-- Login form -->
           <form action="login.php" method="post">
             <div class="form-group">
-              <label for="username">Username:</label>
-              <input type="text" class="form-control" id="username" name="username">
+              <label for="username">Email:</label>
+              <input type="text" class="form-control" id="email" name="email">
             </div>
             <div class="form-group">
-              <label for="pwd">Password:</label>
+              <label for="pwd">Mot de passe :</label>
               <input type="password" class="form-control" id="pwd" name="password">
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Se connecter</button>
           </form>
         </div>
       </div>
@@ -45,5 +45,16 @@
         $('#loginModal').modal('show');
     });
   </script>
+  <script>
+    $(window).on('load',function(){
+        $('#loginModal').modal('show');
+    });
+    
+    // Redirection vers la page d'accueil lorsque la modale est fermée
+    $('#loginModal').on('hidden.bs.modal', function (e) {
+      window.location.href = '../index.html'; // Remplacez 'index.html' par l'URL de votre page d'accueil
+    })
+    </script>
+    
 </body>
 </html>
