@@ -9,14 +9,14 @@ try {
     $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Vérifier si l'ID du véhicule est passé en paramètre
+    // Vérifier si l'ID du véhicule est passé en paramètre GET
     if (isset($_GET['id'])) {
         $carId = $_GET['id'];
 
         // Récupérer les données du véhicule à partir de la table cars
         $query = "SELECT * FROM cars WHERE id = :carId";
         $stmt = $pdo->prepare($query);
-        $stmt->bindParam(':carId', $carId, PDO::PARAM_INT);
+        $stmt->bindParam(':carId', $carId);
         $stmt->execute();
         $car = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -52,13 +52,6 @@ try {
             header("Location: details_car.php?id=$carId");
             exit();
         }
-
-        // Récupérer les images du véhicule à partir de la table car_images
-        $imageQuery = "SELECT * FROM car_images WHERE car_id = :carId";
-        $imageStmt = $pdo->prepare($imageQuery);
-        $imageStmt->bindParam(':carId', $carId, PDO::PARAM_INT);
-        $imageStmt->execute();
-        $images = $imageStmt->fetchAll(PDO::FETCH_ASSOC);
     } else {
         // Rediriger vers la page de gestion des véhicules si l'ID n'est pas spécifié
         header("Location: manage_cars.php");
@@ -69,69 +62,73 @@ try {
 }
 ?>
 
-<!-- Code HTML pour afficher les détails du véhicule et la galerie d'images -->
-<h2>Modifier le véhicule</h2>
+<!DOCTYPE html>
+<html lang="en">
 
-<form method="POST">
-    <div class="form-group">
-        <label for="marque">Marque :</label>
-        <input type="text" class="form-control" name="marque" id="marque" value="<?php echo $car['marque']; ?>">
-    </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier un véhicule</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
 
-    <div class="form-group">
-        <label for="modele">Modèle :</label>
-        <input type="text" class="form-control" name="modele" id="modele" value="<?php echo $car['modele']; ?>">
-    </div>
+<body>
+    <div class="container">
+        <h2 class="mt-5 mb-3">Modifier un véhicule</h2>
 
-    <div class="form-group">
-        <label for="prix">Prix :</label>
-        <input type="text" class="form-control" name="prix" id="prix" value="<?php echo $car['prix']; ?>">
-    </div>
-
-    <div class="form-group">
-        <label for="annee">Année de mise en circulation :</label>
-        <input type="number" class="form-control" name="annee" id="annee" value="<?php echo $car['annee']; ?>">
-    </div>
-
-    <div class="form-group">
-        <label for="kilometrage">Kilométrage :</label>
-        <input type="number" class="form-control" name="kilometrage" id="kilometrage" value="<?php echo $car['kilometrage']; ?>">
-    </div>
-
-    <div class="form-group">
-        <label for="caracteristiques">Caractéristiques :</label>
-        <textarea class="form-control" name="caracteristiques" id="caracteristiques"><?php echo $car['caracteristiques']; ?></textarea>
-    </div>
-
-    <div class="form-group">
-        <label for="equipements">Équipements :</label>
-        <textarea class="form-control" name="equipements" id="equipements"><?php echo $car['equipements']; ?></textarea>
-    </div>
-
-    <div class="form-group">
-        <label for="options">Options :</label>
-        <textarea class="form-control" name="options" id="options"><?php echo $car['options']; ?></textarea>
-    </div>
-
-    <div class="form-group">
-        <label for="description">Description :</label>
-        <textarea class="form-control" name="description" id="description"><?php echo $car['description']; ?></textarea>
-    </div>
-
-    <div class="form-group">
-        <label for="images">Galerie d'images :</label>
-        <?php foreach ($images as $image) : ?>
-            <div class="image-preview">
-                <img src="<?php echo $image['image']; ?>" alt="Image véhicule" class="img-thumbnail">
-                <a href="delete_image.php?id=<?php echo $image['id']; ?>&carId=<?php echo $carId; ?>" class="btn btn-danger btn-sm">Supprimer</a>
+        <form method="POST">
+            <div class="form-group">
+                <label for="marque">Marque :</label>
+                <input type="text" class="form-control" name="marque" id="marque" value="<?php echo $car['marque']; ?>">
             </div>
-        <?php endforeach; ?>
 
-        <div class="custom-file mt-2">
-            <input type="file" class="custom-file-input" id="upload" name="upload">
-            <label class="custom-file-label" for="upload">Choisir une image</label>
-        </div>
+            <div class="form-group">
+                <label for="modele">Modèle :</label>
+                <input type="text" class="form-control" name="modele" id="modele" value="<?php echo $car['modele']; ?>">
+            </div>
+
+            <div class="form-group">
+                <label for="prix">Prix :</label>
+                <input type="text" class="form-control" name="prix" id="prix" value="<?php echo $car['prix']; ?>">
+            </div>
+
+            <div class="form-group">
+                <label for="annee">Année de mise en circulation :</label>
+                <input type="number" class="form-control" name="annee" id="annee" value="<?php echo $car['annee']; ?>">
+            </div>
+
+            <div class="form-group">
+                <label for="kilometrage">Kilométrage :</label>
+                <input type="number" class="form-control" name="kilometrage" id="kilometrage" value="<?php echo $car['kilometrage']; ?>">
+            </div>
+
+            <div class="form-group">
+                <label for="caracteristiques">Caractéristiques :</label>
+                <textarea class="form-control" name="caracteristiques" id="caracteristiques"><?php echo $car['caracteristiques']; ?></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="equipements">Équipements :</label>
+                <textarea class="form-control" name="equipements" id="equipements"><?php echo $car['equipements']; ?></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="options">Options :</label>
+                <textarea class="form-control" name="options" id="options"><?php echo $car['options']; ?></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description :</label>
+                <textarea class="form-control" name="description" id="description"><?php echo $car['description']; ?></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+            <a href="details_car.php?id=<?php echo $carId; ?>" class="btn btn-secondary">Retour aux détails</a>
+        </form>
     </div>
 
-    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
-</form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

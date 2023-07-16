@@ -34,35 +34,10 @@ try {
         echo '<p>Kilométrage : ' . $car['kilometrage'] . ' km</p>';
 
         // Affichage de la galerie d'images
-        echo '<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">';
-        echo '<ol class="carousel-indicators">';
-        foreach ($images as $index => $image) {
-            echo '<li data-target="#carouselExampleIndicators" data-slide-to="' . $index . '"';
-            if ($index === 0) {
-                echo ' class="active"';
-            }
-            echo '></li>';
+        echo '<div class="gallery">';
+        foreach ($images as $image) {
+            echo '<img src="' . $image['image'] . '" alt="Image véhicule">';
         }
-        echo '</ol>';
-        echo '<div class="carousel-inner">';
-        foreach ($images as $index => $image) {
-            echo '<div class="carousel-item';
-            if ($index === 0) {
-                echo ' active';
-            }
-            echo '">';
-            echo '<img src="' . $image['image'] . '" class="d-block w-100" alt="Image">';
-            echo '</div>';
-        }
-        echo '</div>';
-        echo '<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">';
-        echo '<span class="carousel-control-prev-icon" aria-hidden="true"></span>';
-        echo '<span class="sr-only">Previous</span>';
-        echo '</a>';
-        echo '<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">';
-        echo '<span class="carousel-control-next-icon" aria-hidden="true"></span>';
-        echo '<span class="sr-only">Next</span>';
-        echo '</a>';
         echo '</div>';
     } else {
         echo "Identifiant du véhicule non spécifié.";
@@ -70,3 +45,10 @@ try {
 } catch (PDOException $e) {
     echo "Erreur de connexion à la base de données : " . $e->getMessage();
 }
+?>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

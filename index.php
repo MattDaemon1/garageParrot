@@ -50,17 +50,116 @@
 
       <?php include './script/services.php'; ?>
 
-      <?php include './script/filter_cars.php'; ?>
+
 
       <?php include './script/cars.php'; ?>
 
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+          <div id="testimonialCarousel" class="carousel slide" data-ride="carousel">
+            <!-- Indicateurs -->
+            <ol class="carousel-indicators">
+              <?php
+              // Récupérer les avis approuvés depuis la base de données
+              $query = "SELECT * FROM testimonials WHERE approuve = 1";
+              $stmt = $pdo->query($query);
+              $testimonials = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+              // Afficher les indicateurs du carrousel
+              foreach ($testimonials as $index => $testimonial) {
+                echo '<li data-target="#testimonialCarousel" data-slide-to="' . $index . '"';
+                if ($index === 0) {
+                  echo ' class="active"';
+                }
+                echo '></li>';
+              }
+              ?>
+            </ol>
+
+            <!-- Slides du carrousel -->
+            <div class="carousel-inner">
+              <?php
+              // Afficher les slides du carrousel
+              foreach ($testimonials as $index => $testimonial) {
+                echo '<div class="carousel-item';
+                if ($index === 0) {
+                  echo ' active';
+                }
+                echo '">';
+                echo '<div class="testimonial-content">';
+                echo '<h3>' . $testimonial['nom'] . '</h3>';
+                echo '<p>' . $testimonial['commentaire'] . '</p>';
+                echo '<div class="rating">';
+                $rating = $testimonial['note'];
+                for ($i = 1; $i <= 5; $i++) {
+                  echo '<span class="fa fa-star';
+                  if ($i <= $rating) {
+                    echo ' checked';
+                  }
+                  echo '"></span>';
+                }
+                echo '</div>';
+                echo '</div>';
+                echo '</div>';
+              }
+              ?>
+            </div>
+
+            <!-- Contrôles du carrousel -->
+            <a class="carousel-control-prev" href="#testimonialCarousel" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon text-dark" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#testimonialCarousel" role="button" data-slide="next">
+              <span class="carousel-control-next-icon text-dark" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulaire pour laisser un avis -->
+      <div class="row mt-4">
+        <div class="col-md-6 offset-md-3">
+          <div class="testimonial-form">
+            <h3>Laissez votre avis</h3>
+            <form method="POST">
+              <div class="form-group">
+                <label for="nom">Nom :</label>
+                <input type="text" class="form-control" name="nom" id="nom" required>
+              </div>
+              <div class="form-group">
+                <label for="commentaire">Commentaire :</label>
+                <textarea class="form-control" name="commentaire" id="commentaire" required></textarea>
+              </div>
+              <div class="form-group">
+                <label for="note">Note :</label>
+                <select class="form-control" name="note" id="note" required>
+                  <option value="5">5 étoiles</option>
+                  <option value="4">4 étoiles</option>
+                  <option value="3">3 étoiles</option>
+                  <option value="2">2 étoiles</option>
+                  <option value="1">1 étoile</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary">Envoyer</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
     </div>
   </main>
+
+
+
+
   <footer class="footer">
     <div class="container">
       <?php include './script/footer.php'; ?>
     </div>
   </footer>
+
 
 </body>
 
